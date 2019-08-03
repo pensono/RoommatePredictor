@@ -50,30 +50,28 @@ class ProcessedDatasetReader(DatasetReader):
                 if message['sender'] not in self._people:
                     continue
 
-                yield self.text_to_instance(message)
+                yield self.text_to_instance(message['text'], message['sender'])
 
     @overrides
     def text_to_instance(self,  # type: ignore
-                         message) -> Instance:
+                         text: str,
+                         label: str = None) -> Instance:
         # pylint: disable=arguments-differ
         """
         Parameters
         ----------
-        source : ``str``, required
-            The translation's source sentence.
-        candidate : ``str``, required
-            The translation candidate.
+        text : ``str``, required
+            The source message.
         label : ``str``, optional (default = None)
             Whether the candidate is human- or machine-translated, if known.
         """
         fields: Dict[str, Field] = {}
 
-        tokens = self._tokenizer.split_words(message['text'])
-        label = message['sender']
+        tokens = self._tokenizer.split_words(text)
 
         fields["tokens"] = TextField(tokens, self._token_indexers)
-        fields["label"] = LabelField(label)
-
+        if label:
+            fields["label"] = LabelField(label)
         # fields["metadata"] = MetadataField({"message": message['text']})
 
         return Instance(fields)

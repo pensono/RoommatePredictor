@@ -1,18 +1,19 @@
 import json
 import shutil
 import sys
-import codecs
+import time
 
 from allennlp.commands import main
 
-config_file = "experiments/basic.jsonnet"
+config_file = "experiments/regularized.json"
+variant = input("Provide a name for this training run: ")
 
 # Use overrides to train on CPU.
 overrides = json.dumps({
     # "trainer": {"cuda_device": -1}
 })
 
-serialization_dir = "/tmp/debugger_train"
+serialization_dir = "trained/" + time.strftime("%Y%m%d-%H%M%S") + "-" + variant
 
 # Training will fail if the serialization directory already
 # has stuff in it. If you are running the same training loop
@@ -31,4 +32,8 @@ sys.argv = [
     "-o", overrides,
 ]
 
+start = time.time()
 main()
+end = time.time()
+
+print("Training took", (end - start) / 60, "minutes")

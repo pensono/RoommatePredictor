@@ -26,8 +26,12 @@ if __name__ == '__main__':
     processed_messages = []
     for (dirpath, dirnames, filenames) in os.walk(originalPath):
         for in_file_name in filenames:
+            if not in_file_name.endswith('.json'):
+                continue
+
             in_file_path = os.path.join(dirpath, in_file_name)
             with open(in_file_path, 'r', encoding='utf-8') as in_file:
+                print('Processing', in_file_path)
                 processed_messages.extend([telegram_to_processed(message) for message in extract_messages(in_file)])
 
     np.random.shuffle(processed_messages)
