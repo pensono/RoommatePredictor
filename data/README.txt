@@ -1,0 +1,1 @@
+Telegram export data goes here. I created mine with by only exporting personal chats and private groups (with all messages)

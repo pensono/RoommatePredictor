@@ -1,13 +1,12 @@
 {
     "dataset_reader": {
-        "type": "sst_tokens",
-        "granularity": "2-class",
+        "type": "telegram_reader",
         "token_indexers": {
             "tokens": {
                 "type": "single_id"
             }
         },
-        "use_subtrees": true
+        "people": ["Ethan Shea", "Ian Good", "Patty Popp", "Яель Гольдин"]
     },
     "iterator": {
         "type": "bucket",
@@ -44,9 +43,8 @@
             }
         }
     },
-    "train_data_path": "train.txt",
-    "validation_data_path": "dev.txt",
-    "test_data_path": "test.txt",
+    "train_data_path": "data/19-8-2.json",
+    "validation_data_path": "data/19-8-2.json",
     "trainer": {
         "cuda_device": 0,
         "grad_norm": 5,
