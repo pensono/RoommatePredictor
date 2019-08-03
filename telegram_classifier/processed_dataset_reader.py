@@ -15,8 +15,8 @@ from telegram_classifier.telegram_reader import *
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-@DatasetReader.register("telegram_reader")
-class TelegramDatasetReader(DatasetReader):
+@DatasetReader.register("processed_reader")
+class ProcessedDatasetReader(DatasetReader):
     def __init__(self,
                  people: List[str],
                  language: str = 'de_core_news_sm',
@@ -46,8 +46,8 @@ class TelegramDatasetReader(DatasetReader):
         file_path = cached_path(file_path)
 
         with open(file_path, 'r', encoding='utf-8') as file:
-            for message in extract_messages(file):
-                if message['from'] not in self._people:
+            for message in json.load(file):
+                if message['sender'] not in self._people:
                     continue
 
                 yield self.text_to_instance(message)
@@ -68,17 +68,12 @@ class TelegramDatasetReader(DatasetReader):
         """
         fields: Dict[str, Field] = {}
 
-        # Remove formatting
-        raw_text = normalize_message_text(message['text'])
+        tokens = self._tokenizer.split_words(message['text'])
+        label = message['sender']
 
-        tokens = self._tokenizer.split_words(raw_text)
-        label = message['from']
-
-        print([sanitize(token.text) for token in tokens])
-
-        fields["message"] = TextField(tokens, self._token_indexers)
+        fields["tokens"] = TextField(tokens, self._token_indexers)
         fields["label"] = LabelField(label)
 
-        fields["metadata"] = MetadataField({"message": raw_text,
-                                            "date": message['date']})
+        # fields["metadata"] = MetadataField({"message": message['text']})
+
         return Instance(fields)

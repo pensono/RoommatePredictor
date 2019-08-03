@@ -1,6 +1,6 @@
 {
     "dataset_reader": {
-        "type": "telegram_reader",
+        "type": "processed_reader",
         "token_indexers": {
             "tokens": {
                 "type": "single_id"
@@ -37,16 +37,17 @@
                 "tokens": {
                     "type": "embedding",
                     "embedding_dim": 300,
-                    "pretrained_file": "glove.840B.300d.txt.gz",
+                    "pretrained_file": "pretrained/glove.840B.300d.zip",
                     "trainable": true
                 }
             }
         }
     },
-    "train_data_path": "data/19-8-2.json",
-    "validation_data_path": "data/19-8-2.json",
+    "train_data_path": "data/processed/train.json",
+    "validation_data_path": "data/processed/validation.json",
+    "test_data_path": "data/processed/test.json",
     "trainer": {
-        "cuda_device": 0,
+        "cuda_device": -1,
         "grad_norm": 5,
         "learning_rate_scheduler": {
             "type": "reduce_on_plateau",
@@ -62,15 +63,5 @@
         },
         "patience": 5,
         "validation_metric": "+accuracy"
-    },
-    "validation_dataset_reader": {
-        "type": "sst_tokens",
-        "granularity": "2-class",
-        "token_indexers": {
-            "tokens": {
-                "type": "single_id"
-            }
-        },
-        "use_subtrees": false
     }
 }

@@ -1,6 +1,6 @@
 from unittest import TestCase
 import json
-from telegram_classifier.telegram_dataset_reader import normalize_message_text
+from telegram_classifier.telegram_reader import normalize_message_text
 
 
 class TestTelegramDatasetReader(TestCase):
