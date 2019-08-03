@@ -1,39 +1,61 @@
 import json
-import shutil
+import numpy as np
 import sys
 import time
 
 from allennlp.commands import main
 
 config_file = "experiments/regularized.json"
-variant = input("Provide a name for this training run: ")
 
-# Use overrides to train on CPU.
-overrides = json.dumps({
-    # "trainer": {"cuda_device": -1}
-})
 
-serialization_dir = "trained/" + time.strftime("%Y%m%d-%H%M%S") + "-" + variant
+def train_single(overrides=None):
+    overrides = overrides or {}
 
-# Training will fail if the serialization directory already
-# has stuff in it. If you are running the same training loop
-# over and over again for debugging purposes, it will.
-# Hence we wipe it out in advance.
-# BE VERY CAREFUL NOT TO DO THIS FOR ACTUAL TRAINING!
-shutil.rmtree(serialization_dir, ignore_errors=True)
+    serialization_dir = "trained/" + time.strftime("%Y%m%d-%H%M%S")
 
-# Assemble the command into sys.argv
-sys.argv = [
-    "allennlp",  # command name, not used by main
-    "train",
-    config_file,
-    "-s", serialization_dir,
-    "--include-package", "telegram_classifier",
-    "-o", overrides,
-]
+    # Assemble the command into sys.argv
+    sys.argv = [
+        "allennlp",  # command name, not used by main
+        "train",
+        config_file,
+        "-s", serialization_dir,
+        "--include-package", "telegram_classifier",
+        '-o', overrides
+    ]
 
-start = time.time()
-main()
-end = time.time()
+    start = time.time()
+    main()
+    end = time.time()
 
-print("Training took", (end - start) / 60, "minutes")
+    print("Training took", (end - start) / 60, "minutes")
+
+
+def train_random_search():
+    while True:
+        np.random.seed()  # Not sure why I have to do this
+        hidden_size1 = int(2.0 ** np.random.uniform(5, 13))
+        hidden_size2 = int(2.0 ** np.random.uniform(5, 13))
+        regularization = 10.0 ** np.random.uniform(-5, -2)
+
+        print(f"Training with {hidden_size1} {hidden_size2} {regularization}")
+
+        overrides = json.dumps({
+            'model': {
+                "regularizer": [
+                    ["weight.*", {"type": "l2", "alpha": regularization}]
+                ],
+                'seq2seq_encoder': {
+                    'hidden_size': hidden_size1
+                },
+                'seq2vec_encoder': {
+                    'input_size': hidden_size1 * 2,
+                    'hidden_size': hidden_size2
+                }
+            }
+        })
+
+        train_single(overrides)
+
+
+if __name__ == '__main__':
+    train_random_search()

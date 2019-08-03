@@ -48,7 +48,6 @@
     },
     "train_data_path": "data/processed/train.json",
     "validation_data_path": "data/processed/validation.json",
-    "test_data_path": "data/processed/test.json",
     "trainer": {
         "cuda_device": -1,
         "grad_norm": 5,
