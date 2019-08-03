@@ -1,9 +1,7 @@
 from typing import Dict, Tuple, List
 import logging
 import json
-import sys
-import emoji
-
+import re
 from overrides import overrides
 
 from allennlp.common.file_utils import cached_path
@@ -13,6 +11,8 @@ from allennlp.data.instance import Instance
 from allennlp.data.token_indexers import SingleIdTokenIndexer, TokenIndexer
 from allennlp.data.tokenizers import Token
 from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
+
+from telegram_classifier.utils import *
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -63,6 +63,12 @@ class TelegramDatasetReader(DatasetReader):
                 if message['text'] == '':
                     continue  # No text might happen if it's a picture with no caption
 
+                # Get rid of bot stuff
+                if 'via_bot' in message:
+                    continue
+                if any('bot_message' in text for text in message['text']):
+                    continue
+
                 yield self.text_to_instance(message)
 
     @overrides
@@ -82,10 +88,12 @@ class TelegramDatasetReader(DatasetReader):
         fields: Dict[str, Field] = {}
 
         # Remove formatting
-        raw_text = normalizeMessageText(message['text'])
+        raw_text = normalize_message_text(message['text'])
 
         tokens = self._tokenizer.split_words(raw_text)
         label = message['from']
+
+        print([sanitize(token.text) for token in tokens])
 
         fields["message"] = TextField(tokens, self._token_indexers)
         fields["label"] = LabelField(label)
@@ -95,7 +103,7 @@ class TelegramDatasetReader(DatasetReader):
         return Instance(fields)
 
 
-def normalizeMessageText(message_text):
+def normalize_message_text(message_text):
     def get_text(part):
         if isinstance(part, str):
             return part
@@ -104,5 +112,10 @@ def normalizeMessageText(message_text):
 
     if isinstance(message_text, list):
         # Flatten out the nested parts which are labeled by telegram as json objects
-        return "".join([get_text(part) for part in message_text])
+        message_text = "".join([get_text(part) for part in message_text])
+
+    message_text = message_text.replace('’', "'")
+    # Thanks? http://urlregex.com/
+    message_text = re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', 'URL_TOKEN', message_text)
+
     return message_text

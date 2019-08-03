@@ -1,6 +1,6 @@
 from unittest import TestCase
 import json
-from telegram_classifier.telegram_dataset_reader import normalizeMessageText
+from telegram_classifier.telegram_dataset_reader import normalize_message_text
 
 
 class TestTelegramDatasetReader(TestCase):
@@ -16,5 +16,23 @@ class TestTelegramDatasetReader(TestCase):
               ]
         """, "Amelia do you know where the SD card is?")
 
+    def test_normalizeReplaceFunkyChars(self):
+        self.normalizeTest("""
+               "I’m"
+        """, "I'm")
+
+    def test_normalizeReplaceUrl(self):
+        self.normalizeTest("""
+               "http://www.microsoft.com/"
+        """, "URL_TOKEN")
+
+        self.normalizeTest("""
+               "https://microsoft.com/"
+        """, "URL_TOKEN")
+
+        self.normalizeTest("""
+               "url in the middle of https://microsoft.com/ a message"
+        """, "url in the middle of URL_TOKEN a message")
+
     def normalizeTest(self, input, expected):
-        self.assertEqual(normalizeMessageText(json.loads(input)), expected)
+        self.assertEqual(normalize_message_text(json.loads(input)), expected)
