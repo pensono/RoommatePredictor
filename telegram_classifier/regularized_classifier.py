@@ -118,7 +118,6 @@ class RegularizedClassifier(Model):
                          .get(label_idx, str(label_idx)))
             classes.append(label_str)
         output_dict["label"] = classes
-        output_dict["confidences"] = confidences
         return output_dict
 
     def get_metrics(self, reset: bool = False) -> Dict[str, float]:

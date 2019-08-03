@@ -21,7 +21,7 @@
     "model": {
         "type": "regularized_classifier",
         "regularizer": [
-            ["weight.*", {"type": "l2", "alpha": 0.005}]
+            ["weight.*", {"type": "l2", "alpha": 0.0003}]
         ],
         "seq2seq_encoder": {
             "type": "lstm",
