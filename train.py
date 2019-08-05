@@ -33,8 +33,8 @@ def train_single(overrides=None):
 def train_random_search():
     while True:
         np.random.seed()  # Not sure why I have to do this
-        hidden_size1 = int(2.0 ** np.random.uniform(5, 13))
-        hidden_size2 = int(2.0 ** np.random.uniform(5, 13))
+        hidden_size1 = int(2.0 ** np.random.uniform(5, 11))
+        hidden_size2 = int(2.0 ** np.random.uniform(5, 11))
         regularization = 10.0 ** np.random.uniform(-5, -2)
 
         print(f"Training with {hidden_size1} {hidden_size2} {regularization}")

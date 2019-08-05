@@ -17,7 +17,7 @@ for directory in os.listdir('trained'):
 
         print('''{0},
                 {1[training_accuracy]},
-                {1[validation_accuracy]},
+                {1[best_validation_accuracy]},
                 {1[best_epoch]},
                 {2[model][seq2seq_encoder][hidden_size]},
                 {2[model][seq2vec_encoder][hidden_size]},
