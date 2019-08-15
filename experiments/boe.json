@@ -6,7 +6,7 @@
                 "type": "single_id"
             }
         },
-        "people": ["Ethan Shea", "Ian Good", "Patty Popp", "Яель Гольдин"]
+        "people": ["Ethan Shea", "Ian Good", "Patty Popp", "Yael Goldin"]
     },
     "iterator": {
         "type": "bucket",
@@ -19,7 +19,7 @@
         ]
     },
     "model": {
-        "type": "basic_classifier",
+        "type": "regularized_classifier",
         "seq2seq_encoder": {
             "type": "lstm",
             "bidirectional": true,
