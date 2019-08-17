@@ -41,4 +41,4 @@ def print_infos(model):
                   .format(directory, metrics, config))
 
 
-print_infos('boe')
+print_infos('lstm')

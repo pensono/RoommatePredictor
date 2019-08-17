@@ -10,7 +10,7 @@ logger = logging.getLogger('predictor')
 logger.info(f'Loading model from {os.path.abspath(os.curdir)}')
 import_submodules('telegram_classifier')
 
-archive_folder = '../trained-lstm/20190802-232055-less_regularized'
+archive_folder = '/models'
 
 archive = load_archive(os.path.join(archive_folder, 'model.tar.gz'))
 predictor = Predictor.from_archive(archive, 'roommate_pred')
