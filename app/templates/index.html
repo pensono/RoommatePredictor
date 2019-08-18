@@ -61,18 +61,22 @@
 </head>
 <body>
 <main role="main" class="container">
-    <h1>Roommate Predictor</h1>
+    <h2>Roommate Predictor</h2>
+
+    <div class="row">
+        <h4 class="col-12">Phrase:</h4>
+    </div>
     <div class="input-group input-group-sm mb-3">
         <input type="text" class="form-control" aria-label="Sizing example input"
                aria-describedby="inputGroup-sizing-sm" id="phrase-input">
     </div>
 
-    <div class="row col-12">
-        <button type="button" class="btn btn-dark float-right" id="submit-prediction">Submit</button>
+    <div class="text-right">
+        <button type="button" class="btn btn-dark" id="submit-prediction">Submit</button>
     </div>
 
     <div class="row">
-        <h2>Prediction:</h2>
+        <h4 class="col-12">Prediction:</h4>
     </div>
     <div id="prediction-result" class="row"></div>
     <div id="prediction-results" class="row"></div>
