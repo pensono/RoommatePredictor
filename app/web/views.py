@@ -1,6 +1,7 @@
 import json
 import random
 import emoji
+import logging
 
 from django.http import HttpResponse
 from django.template import loader
@@ -48,6 +49,9 @@ def load_phrases():
     return phrases
 
 
+logger = logging.getLogger('predictor')
+
+
 @csrf_exempt  # Not a best practice, but gets the job done
 def results(request):
     phrases = load_phrases()
@@ -73,6 +77,8 @@ def results(request):
         'total': len(request.POST),
         'percent': f"{100.0 * score / len(request.POST):.0f}"
     }
+
+    logger.info(context)
 
     template = loader.get_template('results.html')
     return HttpResponse(template.render(context, request))

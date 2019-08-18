@@ -19,24 +19,26 @@
 </head>
 <body>
 <main role="main" class="container">
-    <h2>Human Parity Test</h2>
+    <h2 class="mt-3">Human Parity Test</h2>
 
     <form action="/results/" method="post">
     {% for phrase in phrases %}
         {{ phrase.number }}. {{ phrase.text }}
+        <div class="row">
         {% for option in options %}
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="{{ phrase.index }}" value="{{ option }}">
-          <label class="form-check-label" for="exampleRadios2">
-            {{ option }}
-          </label>
-        </div>
+            <div class="form-check col-3">
+              <label class="form-check-label">
+                <input type="radio" name="{{ phrase.index }}" value="{{ option }}"/>
+                {% with "people/"|add:option|add:".jpg" as person_image %}
+                <img src="{% static person_image %}" alt="{{ option }}" class="prediction-image rounded d-block"/>
+                {% endwith %}
+              </label>
+            </div>
         {% endfor %}
-        </p>
+        </div>
         <br/>
     {% endfor %}
-        <button type="submit" class="btn btn-primary float-right">Submit</button>
-        <br/>
+    <button type="submit" class="btn btn-primary float-right mb-3">Submit</button>
     </form>
 
 </main><!-- /.container -->

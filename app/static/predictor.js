@@ -26,5 +26,7 @@ function refreshPrediction() {
 
             $("#prediction-results").empty();
             $("#percent-template").tmpl(people).appendTo('#prediction-results');
+
+            $("#eval-cta").removeClass('hidden');
         });
 }
