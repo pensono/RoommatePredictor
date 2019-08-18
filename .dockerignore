@@ -3,3 +3,4 @@ pretrained/
 data/
 experiments/
 !trained-boe/20190805-182915/model.tar.gz
+!data/processed/group_chat.json

@@ -22,8 +22,12 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', views.index, name='index'),
-    path('api/predict/<str:phrase>', views.predict, name='index')
+    path('api/predict/<str:phrase>', views.predict),
+
+    path('test/', views.test),
+    path('results/', views.results)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

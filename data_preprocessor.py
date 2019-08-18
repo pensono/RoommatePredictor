@@ -20,6 +20,7 @@ if __name__ == '__main__':
     originalPath = "data/original/"
 
     processed_messages = []
+    group_chat_messages = []
     for (dirpath, dirnames, filenames) in os.walk(originalPath):
         for in_file_name in filenames:
             if not in_file_name.endswith('.json'):
@@ -28,10 +29,12 @@ if __name__ == '__main__':
             in_file_path = os.path.join(dirpath, in_file_name)
             with open(in_file_path, 'r', encoding='utf-8') as in_file:
                 print('Processing', in_file_path)
-                processed_messages.extend([telegram_to_processed(message) for message in extract_messages(in_file)])
+                #processed_messages.extend([telegram_to_processed(message) for message in extract_messages(in_file)])
+                group_chat_messages.extend([telegram_to_processed(message) for message in extract_chat(in_file, 'House Life 2.0')])
 
     np.random.shuffle(processed_messages)
     count = len(processed_messages)
 
-    dump_output(processed_messages[:int(count * .85)], 'train')
-    dump_output(processed_messages[int(count * .85):], 'validation')
+    #dump_output(processed_messages[:int(count * .85)], 'train')
+    #dump_output(processed_messages[int(count * .85):], 'validation')
+    dump_output(group_chat_messages, 'group_chat')

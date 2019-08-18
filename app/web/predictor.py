@@ -28,3 +28,9 @@ def predict(phrase):
 
     return results
 
+
+def get_options():
+    names = []
+    for i in range(archive.model.vocab.get_vocab_size('labels')):
+        names.append(archive.model.vocab.get_token_from_index(i, 'labels'))
+    return names

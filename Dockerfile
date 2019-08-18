@@ -12,6 +12,7 @@ RUN pip3 install emoji
 
 COPY telegram_classifier /app/telegram_classifier
 COPY trained-boe/20190805-182915/model.tar.gz /models/model.tar.gz
+COPY data/processed/group_chat.json /data/group_chat.json
 COPY app /app
 
 WORKDIR /app

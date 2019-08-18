@@ -23,6 +23,27 @@ def extract_messages(file):
         yield message
 
 
+def extract_chat(file, chat_name):
+    d = json.load(file)
+
+    # Combine all the messages together, we don't really care about chats for now
+    messages = [message for chat in d['chats']['list'] for message in chat['messages'] if 'name' in chat and chat['name'] == chat_name]
+
+    for message in messages:
+        if message['type'] != 'message':
+            continue
+        if message['text'] == '':
+            continue  # No text might happen if it's a picture with no caption
+
+        # Get rid of bot stuff
+        if 'via_bot' in message:
+            continue
+        if any('bot_message' in text for text in message['text']):
+            continue
+
+        yield message
+
+
 def normalize_message_text(message_text):
     def get_text(part):
         if isinstance(part, str):
