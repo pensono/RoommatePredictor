@@ -16,5 +16,5 @@ COPY app /app
 
 WORKDIR /app
 
-ENTRYPOINT ["python", "/app/manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["python", "/app/manage.py", "runserver", "0.0.0.0:80"]
 #ENTRYPOINT ["/bin/bash"]

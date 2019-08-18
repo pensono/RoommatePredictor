@@ -30,16 +30,33 @@
             }
         }
     </style>
+
+    <script id="prediction-template" type="text/x-jQuery-tmpl">
+        <div class="col-12">
+            <img src="/static/people/${name}.jpg" alt="${name}" class='big-prediction-image rounded d-block' />
+            <p class='percent'>${name}</p>
+        </div>
+    </script>
+
+    <script id="percent-template" type="text/x-jQuery-tmpl">
+        <div class="col-3">
+            <img src="/static/people/${name}.jpg" alt="${name}" class='prediction-image rounded d-block' />
+            <p class='percent'>${percent}%</p>
+        </div>
+    </script>
+
     <!-- Custom styles for this template -->
     <link href="{% static "style.css" %}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <script src="{% static "jquery.loadTemplate-1.4.4.min.js" %}"></script>
     <script src="{% static "predictor.js" %}"></script>
 </head>
 <body>
@@ -57,9 +74,8 @@
     <div class="row">
         <h2>Prediction:</h2>
     </div>
-    <div id="prediction-image-wrapper" class="row col-12 hidden">
-        <img id="prediction-image" class="rounded mx-auto d-block img-responsive" />
-    </div>
+    <div id="prediction-result" class="row"></div>
+    <div id="prediction-results" class="row"></div>
 </main><!-- /.container -->
 </body>
 </html>

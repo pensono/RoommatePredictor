@@ -6,9 +6,18 @@ $(function () {
         })
             .then(JSON.parse)
             .done(function (data) {
-                var highest = Object.keys(data).reduce((a, b) => data[a] > data[b] ? a : b);
-                $("#prediction-image").attr("src", `/static/people/${highest}.jpg`);
-                $("#prediction-image-wrapper").removeClass("hidden")
+                let people = Object.keys(data)
+                    .sort(function(a,b){return data[b]-data[a]})
+                    .map(name => ({
+                        name: name,
+                        percent: (data[name] * 100).toFixed(2)
+                    }));
+
+                $("#prediction-result").empty();
+                $("#prediction-template").tmpl(people[0]).appendTo('#prediction-result');
+
+                $("#prediction-results").empty();
+                $("#percent-template").tmpl(people).appendTo('#prediction-results');
             });
     });
 });

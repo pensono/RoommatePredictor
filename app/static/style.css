@@ -1,7 +1,17 @@
-#prediction-image {
-    width: 50%;
+.prediction-image {
+    width: 100%;
+}
+
+.big-prediction-image {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hidden {
     display: none;
+}
+
+.percent {
+    text-align: center;
 }
