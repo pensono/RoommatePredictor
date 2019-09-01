@@ -58,24 +58,38 @@ def results(request):
 
     annotated_phrases = []
     score = 0
+    predictor_score = 0
     for index in request.POST:
         actual = phrases[int(index)]['sender']
         guess = request.POST.get(index)
+
+        probs = predictor.predict(phrases[int(index)]['text'])
+        predicted = max(probs, key=probs.get)
+
         correct = guess == actual
         if correct:
             score += 1
+
+        predicted_correct = predicted == actual
+        if predicted_correct:
+            predictor_score += 1
+
         annotated_phrases.append({
             'emoji': emoji.emojize(':white_check_mark:' if correct else ':x:', use_aliases=True),
+            'predicted_emoji': emoji.emojize(':white_check_mark:' if predicted_correct else ':x:', use_aliases=True),
             'text': phrases[int(index)]['text'],
             'guess': guess,
+            'predicted': predicted,
             'actual': actual,
         })
 
     context = {
         'phrases': annotated_phrases,
         'correct': score,
+        'predictor_correct': predictor_score,
         'total': len(request.POST),
-        'percent': f"{100.0 * score / len(request.POST):.0f}"
+        'percent': f"{100.0 * score / len(request.POST):.0f}",
+        'predictor_percent': f"{100.0 * predictor_score / len(request.POST):.0f}"
     }
 
     logger.info(context)

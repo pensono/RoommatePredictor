@@ -22,13 +22,21 @@
     <h2 class="mt-3">Results</h2>
 
     <h4>Score: {{ correct }}/{{ total }}, {{ percent }}%</h4>
+    <h5>Predictor: {{ predictor_correct }}/{{ total }}, {{ predictor_percent }}%</h5>
 
     {% for phrase in phrases %}
-        <p>
-        {{ phrase.emoji }} {{ phrase.text }}<br/>
-        You said: {{ phrase.guess }} <br/>
-        Actual: {{ phrase.actual }}
-        </p>
+        <div class="row">
+            <p class="col-9">
+            "{{ phrase.text }}" - {{ phrase.actual }}<br/>
+            You said: {{ phrase.guess }} {{ phrase.emoji }} <br/>
+            Predictor said: {{ phrase.predicted }} {{ phrase.predicted_emoji }} <br/>
+            </p>
+            {% with "people/"|add:phrase.actual|add:".jpg" as person_image %}
+            <div class="col-3">
+                <img src="{% static person_image %}" alt="{{ option }}" class="prediction-image rounded d-block"/>
+            </div>
+            {% endwith %}
+        </div>
     {% endfor %}
 
 </main><!-- /.container -->
